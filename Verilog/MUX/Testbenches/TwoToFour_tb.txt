@@ -1,0 +1,17 @@
+module TwoToFour_tb();
+reg [0:1] in;
+wire [0:3] out;
+
+TwoToFour uut(.in(in),.out(out));
+
+initial begin
+    in=2'b00;
+    #100;
+    in=2'b01;
+    #100;
+    in=2'b10;
+    #100;
+    in=2'b11;
+
+end
+endmodule

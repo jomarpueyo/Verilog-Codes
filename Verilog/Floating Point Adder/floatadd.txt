@@ -1,0 +1,80 @@
+//Warning: Not Accurate!
+
+module floatadd(a,b,out);
+  input [31:0] a,b;
+  output reg [31:0] out;
+  reg [23:0] mana,manb;
+  reg [23:0] manout;
+  reg [7:0] diff,exponent;
+  
+
+
+always @ (*)
+    begin
+      
+    manb = b[22:0];
+    mana = a[22:0];
+    
+  if (a[30:23] == b[30:23])
+    begin
+      out[30:23] = a[30:23];
+    end
+    
+
+    
+  if (a[30:23] != b[30:23])
+   begin
+     if (a[30:23] > b[30:23])
+      begin
+        diff = a[30:23] - b[30:23];
+        out[30:23] = a[30:23];
+          if (a[31]==1)
+            begin
+              mana=~mana+1'b1;
+            end  
+        mana = mana+23'b10000000000000000000000 >> diff;
+      end
+    else
+      begin
+        diff = b[30:23] - a[30:23];
+        out[30:23] = b[30:23];
+          if  (b[31]==1)
+            begin
+             manb=~manb+1'b1;
+            end  
+        manb = manb+23'b10000000000000000000000 >> diff;
+      end
+  end
+  
+  manout =  mana + manb;
+ out[22:0] = manout[22:0];   
+    
+///////////signed section//////////////////
+  // if signs are the same, out sign= sign    
+if (a[31]==b[31])
+  begin
+    out[31]=a[31];
+  end
+if (a[30:23] > b[30:23])
+  begin
+    out[31] = a[31];
+  end 
+else
+  begin
+  if(a[30:23] < b[30:23])
+    begin
+  // if mantissa a> mantissa b,out sign = a sign
+      if (mana>manb)
+        begin
+          out[31]=a[31];
+        end
+  // if mantissa b> mantissa a,out sign = b sign
+      else
+        begin
+          out[31]=b[31];
+        end
+    end
+  end
+end
+
+endmodule

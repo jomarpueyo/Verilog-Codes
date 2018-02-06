@@ -1,0 +1,27 @@
+`timescale 1ns / 1ps
+module CA(a,b,cin,sum,cout);
+input a,b,cin;
+output sum,cout;
+wire [2:0] w;
+
+xor (w[0],a,b);
+xor (sum,w[0],cin);
+and (w[1],cin,w[0]);
+and (w[2],a,b);
+or  (cout,w[1],w[2]);
+
+endmodule
+
+module RCA4(a,b,cin,sum,cout);
+input [3:0] a,b;
+input cin;
+output [3:0] sum;
+output cout;
+wire [2:0]w;
+
+CA adder1(a[0],b[0],cin,sum[0],w[0]);
+CA adder2(a[1],b[1],w[0],sum[1],w[1]);
+CA adder3(a[2],b[2],w[1],sum[2],w[2]);
+CA adder4(a[3],b[3],w[2],sum[3],cout);
+
+endmodule

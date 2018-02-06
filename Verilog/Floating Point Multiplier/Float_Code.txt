@@ -1,0 +1,81 @@
+module Float(ain,bin,out);
+  input [31:0] ain, bin;
+  output reg [31:0] out;
+  reg [23:0] mana, manb;
+  reg [51:0] hold, copy;
+  reg [3:0] shift, change;
+   
+  always @(*)
+    begin
+  //first bit
+if(ain[31]==bin[31])
+   begin
+    out[31]=1'b0;
+  end
+else
+    begin
+    out[31]=1'b1;
+  end
+
+  //mantisssa  
+  mana = 24'b100000000000000000000000;
+  manb = 24'b100000000000000000000000;
+  hold = 52'b0;
+  shift = 1'b0;
+  change = 1'b0;
+  
+  mana = mana + ain[22:0];
+  manb = manb + bin[22:0];
+  
+  hold = mana * manb;
+  copy = hold;
+ 
+ while(hold[51]!=1)
+  begin
+    hold = hold << 1;
+    change = change + 1'b1;
+  end
+	  
+  //grabs mantissa
+  if(hold[27] = 1b'1)
+    begin
+      hold[28] = hold[28] + 1'b1;
+    end
+    
+  out[22:0]=hold[51:28];
+  
+  //calculates decimal shift
+if (change!=1'b0)
+    begin
+if(copy[51:46]>6'b000001)
+    begin
+      shift = 4'b0001;
+    end  
+if(copy[51:46]>6'b000010)
+    begin
+      shift = 4'b0010;
+    end
+if(copy[51:46]>6'b000100)
+    begin
+      shift = 4'b0011;
+    end
+if(copy[51:46]>6'b001000)
+    begin
+      shift = 4'b0100;
+    end
+if(copy[51:46]>6'b010000)
+    begin
+      shift = 4'b0101;
+    end
+if(copy[51:46]>6'b100000)
+    begin
+      shift = 4'b0110;
+    end 
+  end
+  
+  //exponent
+  out[30:23]=(ain[30:23]+bin[30:23]+shift-8'b01111111);
+ 
+end
+  
+endmodule

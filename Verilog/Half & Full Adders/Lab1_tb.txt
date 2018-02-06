@@ -1,0 +1,50 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 09/17/2017 06:43:08 PM
+// Design Name: 
+// Module Name: addtb
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+module addtb();
+reg x_1,x_2,carry_in;
+wire sum,carry_out;
+
+fulladd uut(
+    .x_1(x_1),
+    .x_2(x_2),
+    .carry_in(carry_in),
+    .sum(sum),
+    .carry_out(carry_out)
+    );
+    
+initial begin
+    x_1=0;
+    x_2=0;
+    carry_in=0;
+    #100
+    x_1=1;
+    #100
+    x_1=0;
+    x_2=1;
+    #100
+    x_1=1;
+    #100
+    carry_in=1;
+    
+   end
+        
+endmodule

@@ -1,0 +1,69 @@
+`timescale 1ns / 1ps
+
+////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer:
+//
+// Create Date:   22:04:55 02/08/2017
+// Design Name:   bcd
+// Module Name:   C:/temp/LabAssignment3/bcd_tb.v
+// Project Name:  LabAssignment3
+// Target Device:  
+// Tool versions:  
+// Description: 
+//
+// Verilog Test Fixture created by ISE for module: bcd
+//
+// Dependencies:
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+////////////////////////////////////////////////////////////////////////////////
+
+module bcd_tb;
+
+	// Inputs
+	reg [11:0] bcdin;
+	reg st;
+
+	// Outputs
+	wire [9:0] bin;
+
+	// Instantiate the Unit Under Test (UUT)
+	bcd uut (
+		.bcdin(bcdin), 
+		.st(st), 
+		.bin(bin)
+	);
+
+	initial begin
+		// Initialize Inputs
+		bcdin = 0;
+		st = 0;
+		
+		#100
+		
+		bcdin = 12'b001000100111;
+		st = 1'b1;  
+	
+		#100;
+		
+		bcdin = 12'b001000100111;
+		st = 1'b1;
+
+		#100;
+     
+		bcdin = 12'b000000000000;
+		st = 1'b1;
+		
+		#100;  
+
+        
+		
+
+	end
+      
+endmodule
+

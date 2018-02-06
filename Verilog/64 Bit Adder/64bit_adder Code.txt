@@ -1,0 +1,63 @@
+//Full 1-Bit Adder
+module FBA(a,b,cin,sum,cout);
+output sum,cout; 
+input  a,b,cin;
+wire w1,w2,w3;
+
+	xor(w1,a,b);
+	xor(sum,w1,cin);
+	and(w2,w1,cin);
+	and(w3,a,b);
+	or (cout,w2,w3);
+
+endmodule
+
+
+// 4-bit Adder
+module FBA_4bit(a,b,cin,sum,cout);
+output [3:0] sum; 
+output cout;
+input [3:0] a,b;
+input cin;
+wire w1,w2,w3;
+
+  //format(a,b,cin,sum,out) 
+  FBA add1(a[0],b[0],cin,sum[0],w1);
+  FBA add2(a[1],b[1],w1,sum[1],w2);
+  FBA add3(a[2],b[2],w2,sum[2],w3);
+  FBA add4(a[3],b[3],w3,sum[3],cout);
+
+endmodule
+
+
+//16-Bit Adder
+module FBA_16bit(a,b,cin,sum,cout);
+output [15:0] sum; 
+output cout;
+input [15:0] a,b;
+input cin;
+wire w1,w2,w3;  
+
+  //format(a,b,cin,sum,cout)
+  FBA_4bit add1(a[3:0],b[3:0],cin,sum[3:0],w1);
+  FBA_4bit add2(a[7:4],b[7:4],w1,sum[7:4],w2);
+  FBA_4bit add3(a[11:8],b[11:8],w2,sum[11:8],w3);
+  FBA_4bit add4(a[15:12],b[15:12],w3,sum[15:12],cout);
+  
+endmodule
+
+
+//64-Bit Adder
+module FBA_64bit(a,b,cin,sum,cout);
+output [63:0] sum; 
+output cout;
+input [63:0] a,b;
+input cin;
+wire w1,w2,w3;
+
+  FBA_16bit add1(a[15:0],b[15:0],cin,sum[15:0],w1);
+  FBA_16bit add2(a[31:16],b[31:16],w1,sum[31:16],w2);
+  FBA_16bit add3(a[47:32],b[47:32],w2,sum[47:32],w3);
+  FBA_16bit add4(a[63:48],b[63:48],w3,sum[63:48],cout);
+  
+endmodule 

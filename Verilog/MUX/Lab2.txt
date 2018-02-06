@@ -1,0 +1,57 @@
+///2-to-1 mux: gate level
+module TwoToOne(y,l0,l1,s);
+output y;
+input l0,l1,s;
+wire w[1:0];
+    
+    and(w[1],~s,l0);
+    and(w[0],s,l1);
+    or (y,w[0],w[1]);
+
+endmodule
+
+//4-to-1 mux
+module FourToOne(i0,i1,i2,i3,s1,s2,out);
+input i0,i1,i2,i3,s1,s2;
+output out;
+wire w[1:0];
+
+//using TwoToOne module
+    TwoToOne mux1(w[0],i0,i1,s1);
+    TwoToOne mux2(w[1],i2,i3,s1);
+    TwoToOne mux3(out,w[1],w[0],s2);
+    
+endmodule
+
+//4-to-2 encoder: behavioral 
+module FourToTwo(d,out);
+output reg [0:1] out;
+input [0:3] d;
+
+always@(*)
+    begin
+        case(d)
+        4'b0000: out = 2'bxx;
+        4'b1000: out = 0;
+        4'b0100: out = 1;
+        4'b0010: out = 2;
+        4'b0001: out = 3; 
+        endcase        
+    end    
+endmodule
+
+//2-to-4 decoder: behavioral
+module TwoToFour(in,out);
+output reg [0:3]out;
+input [0:1]in;
+
+always@(*)
+    begin
+        case(in)
+            2'b00: out = 4'b1000;
+            2'b01: out = 4'b0100;
+            2'b10: out = 4'b0010;
+            2'b11: out = 4'b0001;
+        endcase
+    end
+endmodule

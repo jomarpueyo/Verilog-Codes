@@ -1,0 +1,75 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date:    16:20:35 02/08/2017 
+// Design Name: 
+// Module Name:    bcd 
+// Project Name: 
+// Target Devices: 
+// Tool versions: 
+// Description: 
+//
+// Dependencies: 
+//
+// Revision: 
+// Revision 0.01 - File Created
+// Additional Comments: 
+//
+//////////////////////////////////////////////////////////////////////////////////
+
+
+module bcd(bcdin,st,bin);
+input [11:0] bcdin; 				//register A
+input st; 							//start
+output reg [9:0] bin; 			//register B
+reg [11:0] bcd; 					//copy of input
+reg [3:0] hundreds,tens,ones; //4bit bcd places
+integer i; 	                  //10 bit loop OR ELSE INFINITE SHIFT TO THE RIGHT (I learned my lesson)
+
+always@*
+begin
+	if(st==1'b1);  
+		begin
+			bcd=bcdin; 
+										
+			for(i=0;i<10;i=i+1)
+				begin
+					bin[i]=bcd[0];
+					bcd=bcd>>1;
+										//break bcd into 3 4bit sections 
+					hundreds={bcd[3],bcd[2],bcd[1],bcd[0]};
+					tens    ={bcd[7],bcd[6],bcd[5],bcd[4]};
+					ones    ={bcd[11],bcd[10],bcd[9],bcd[8]};
+										//subtract 4'b0011 if greater than 4'b1000
+						if(hundreds>=4'b1000)
+							begin
+								hundreds=hundreds-4'b0011;
+								bcd[0]=hundreds[0];
+								bcd[1]=hundreds[1];
+								bcd[2]=hundreds[2];
+								bcd[3]=hundreds[3];
+							end
+										//subtract 4'b0011 if greater than 4'b1000
+						if(tens>=4'b1000)
+							begin
+								tens=tens-4'b0011;
+								bcd[4]=tens[0];
+								bcd[5]=tens[1];
+								bcd[6]=tens[2];
+								bcd[7]=tens[3];
+							end
+										//subtract 4'b0011 if greater than 4'b1000
+						if(ones>=4'b1000)
+							begin
+								ones=ones-4'b0011;
+								bcd[8]=ones[0];
+								bcd[9]=ones[1];
+								bcd[10]=ones[2];
+								bcd[11]=ones[3];
+							end
+				end
+		end
+end					
+endmodule

@@ -1,0 +1,19 @@
+module TwoToOne_tb();
+reg l0, l1,s;
+wire y;
+
+TwoToOne uut(.l0(l0), .l1(l1), .s(s), .y(y));
+    
+initial begin
+    l0=0;
+    l1=1;
+    s=0;
+    #100
+    s=1;
+    #100
+    s=0;
+    #100
+    s=1;
+end
+
+endmodule

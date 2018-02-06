@@ -1,0 +1,24 @@
+
+module FourTwoOne_tb();
+reg i0,i1,i2,i3,s1,s2;
+wire out;
+
+
+FourToOne uut(.i0(i0),.i1(i1),.i2(i2),.i3(i3),.s1(s1),.s2(s2),.out(out));
+initial begin
+    i0=1'b0;
+    i1=1'b1;
+    i2=1'b0;
+    i3=1'b1;
+    s1=0;
+    s2=0;
+    #100
+    s1=1;
+    #100
+    s1=0;
+    s2=1;
+    #100
+    s1=1;
+end
+
+endmodule
